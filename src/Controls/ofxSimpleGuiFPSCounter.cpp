@@ -12,18 +12,18 @@ void ofxSimpleGuiFPSCounter::setup() {
 
 
 void ofxSimpleGuiFPSCounter::draw(float x, float y) {
-	setPos(x, y);
-	
+	setPosition(x, y);
+
 	glPushMatrix();
 	glTranslatef(x, y, 0);
-	
+
 	ofEnableAlphaBlending();
 	ofFill();
 	setTextBGColor(false);
 	ofRect(0, 0, width, height);
-	
+
 	setTextColor(false);
 	ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
-	
+
 	glPopMatrix();
 }

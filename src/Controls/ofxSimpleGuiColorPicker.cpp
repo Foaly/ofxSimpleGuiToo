@@ -102,7 +102,7 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
 //	enabled = true;
 
 	//update postion of gui object
-	setPos(x, y);
+	setPosition(x, y);
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 
@@ -126,14 +126,14 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
 			case 3:glColor3f(getValue(i), getValue(i), getValue(i)); break;
 		}
 		*/
-		
+
 		switch(i) {
 			case 0:glColor3f(1, 0, 0); break;
 			case 1:glColor3f(0, 1, 0); break;
 			case 2:glColor3f(0, 0, 1); break;
 			case 3:glColor3f(getValue(i), getValue(i), getValue(i)); break;
 		}
-		
+
 
 		//ofRect(0, startY, barwidth[i], config->colorSliderHeight * 1.5); // was * 1.8
 		//ofRect(0, startY, barwidth[i], config->sliderHeight);
