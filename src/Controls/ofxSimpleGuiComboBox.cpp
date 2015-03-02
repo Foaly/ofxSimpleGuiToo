@@ -142,12 +142,12 @@ void ofxSimpleGuiComboBox::onPressOutside(int x, int y, int button){
 
 void ofxSimpleGuiComboBox::onDragOver(int x, int y, int button){
 	//same behavior as mouse move
-	onMouseMove(x,y);
+	mouseMoved(x,y);
 }
 
 void ofxSimpleGuiComboBox::onDragOutside(int x, int y, int button){
 	//same behavior as mouse move
-	onMouseMove(x,y);
+	mouseMoved(x,y);
 }
 
 bool ofxSimpleGuiComboBox::hitTest(int tx, int ty) {
@@ -159,7 +159,7 @@ bool ofxSimpleGuiComboBox::hitTest(int tx, int ty) {
 	return ((tx > x) && (tx < x + width) && (ty > y) && (ty < y + fullheight));
 }
 
-void ofxSimpleGuiComboBox::onMouseMove(int x, int y) {
+void ofxSimpleGuiComboBox::mouseMoved(int x, int y) {
 	m_mouseMovedSinceClick=true;
 	if(m_hasFocus) {
 		//see which index was selected.
@@ -207,9 +207,6 @@ void ofxSimpleGuiComboBox::setCBTextBGColor() {
 #define kSGCBTextPaddingX    3
 #define kSGCBTextPaddingY    15
 void ofxSimpleGuiComboBox::draw(float x, float y) {
-	//we assume a max of 256 characters.
-	char choiceBuf[256];
-
 	setPosition(x, y);
 
 	glPushMatrix();
@@ -221,9 +218,9 @@ void ofxSimpleGuiComboBox::draw(float x, float y) {
 	ofRect(0, 0, width, height);
 
 	setTextColor();
-//	sprintf(choiceBuf, "%s: %s", m_title, m_choices.size() ? m_choices[m_selectedChoice] : "(No Choices Available)");
 
-	ofDrawBitmapString(m_title + "\n\n" + (m_choices.size() ? m_choices[m_selectedChoice] : "N/A"), kSGCBTextPaddingX, kSGCBTextPaddingY);
+	ofDrawBitmapString(m_title, kSGCBTextPaddingX, kSGCBTextPaddingY);
+	ofDrawBitmapString(m_choices.size() ? m_choices[m_selectedChoice] : "N/A", kSGCBTextPaddingX, kSGCBTextPaddingY * 2 + 3); // 3 pixel margin between texts
 	//draw a combobox down triangle icon so the users know to click
 	ofTriangle(width - (kSGCBTriangleWidth + KSGCBTrianglePadding), kSGCBTextPaddingY/2,
 			   width - (KSGCBTrianglePadding), kSGCBTextPaddingY/2,
@@ -231,17 +228,17 @@ void ofxSimpleGuiComboBox::draw(float x, float y) {
 
 	if(m_hasFocus) {
 		setCBTextBGColor();
-		ofRect(0, height, width, config->comboBoxTextHeight * m_choices.size());
+		ofRect(0, height, width, config->comboBoxTextHeight * m_choices.size() + 4); // 4 pixel margin at the bottom of the choice list
 		setTextColor();
 		ofLine(0, config->comboBoxHeight-1, width, config->comboBoxHeight-1);
 
 		for(int i=0; i < m_choices.size(); i++) {
 			setCBTextColor();
 			//invert for selected choice
-			float curY = height + i*config->comboBoxTextHeight;
+			float curY = height + i * config->comboBoxTextHeight;
 			if(i==m_mouseChoice){
 				//draw a text colored rect so we can see the inverse
-				ofRect(0, curY, width, config->comboBoxTextHeight);
+				ofRect(0, curY + 2, width, config->comboBoxTextHeight); // offset the rect by 2 pixel, so the text appears centred
 				setCBTextBGColor();
 			}
 

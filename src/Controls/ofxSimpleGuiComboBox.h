@@ -63,7 +63,7 @@ public:
 	void removeChoice(int index = -1);
 
 	virtual void onPressOutside(int x, int y, int button);
-	virtual void onMouseMove(int x, int y);
+	virtual void mouseMoved(int x, int y);
 	virtual void onDragOver(int x, int y, int button);
 	virtual void onDragOutside(int x, int y, int button);
 
