@@ -19,7 +19,7 @@ ofxSimpleGuiColorPicker::ofxSimpleGuiColorPicker(string name, float* value, floa
 }
 
 void ofxSimpleGuiColorPicker::setup() {
-	setSize(config->gridSize.x - config->padding.x, config->colorSliderHeight * 6.4 + config->sliderTextHeight);
+	setSize(config->gridSize.x - config->padding.x, config->colorSliderHeight * 4 + config->sliderTextHeight);
 	for(int i=0; i<4; i++) {
 		pct[i] = ofMap(getValue(i), 0, max, 0.0, width);
 		barwidth[i] = pct[i];
@@ -59,7 +59,7 @@ void ofxSimpleGuiColorPicker::setValue(float f, int i) {
 void ofxSimpleGuiColorPicker::updateSlider() {
 	if(!enabled) return;
 
-	int i= (getMouseY() - y) / config->colorSliderHeight/1.6; // was *2
+	int i= (getMouseY() - y) / config->colorSliderHeight;
 	if(i<0 || i>=4) return;
 
 	if(pct[i] > width) {
@@ -116,17 +116,9 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
 		ofEnableAlphaBlending();
 		ofFill();
 		setEmptyColor();
-		ofRect(0, startY, width, config->colorSliderHeight*1.5); //was * 1.8
+		ofRect(0, startY, width, config->colorSliderHeight - 2); // 2 pixel margin
 
-        /*
-		switch(i) {
-			case 0:glColor3f(getValue(i), 0, 0); break;
-			case 1:glColor3f(0, getValue(i), 0); break;
-			case 2:glColor3f(0, 0, getValue(i)); break;
-			case 3:glColor3f(getValue(i), getValue(i), getValue(i)); break;
-		}
-		*/
-
+        // set slider color
 		switch(i) {
 			case 0:glColor3f(1, 0, 0); break;
 			case 1:glColor3f(0, 1, 0); break;
@@ -134,22 +126,30 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
 			case 3:glColor3f(getValue(i), getValue(i), getValue(i)); break;
 		}
 
+        // determine whether the mouse is within the element and over what slider
+		int overBar = -1;
+		if((getMouseY() - y) >= 0) {
+            overBar = (getMouseY() - y) / config->colorSliderHeight;
+		}
+		const bool withinElement = getMouseX() >= this->x && getMouseX() <= this->x + width;
 
-		//ofRect(0, startY, barwidth[i], config->colorSliderHeight * 1.5); // was * 1.8
-		//ofRect(0, startY, barwidth[i], config->sliderHeight);
-		ofRect(0, startY, barwidth[i], 2.0);
+		ofFloatColor valueStringColor(0.5, 0.5, 0.5);
+		float sliderHeight = 2.0;
 
-		int iover = (getMouseY() - y) / config->colorSliderHeight/1.6; // was *2
-		bool isOver = iover == i;
-		if(isOver) {
-			glColor3f(1, 1, 1);
-		} else {
-			glColor3f(0.5, 0.5, 0.5);
+		if(overBar == i && withinElement) {
+            // change the color and height of the slider the mouse is over
+			valueStringColor = ofFloatColor(1, 1, 1);
+			sliderHeight = config->colorSliderHeight - 2; // 2 pixel margin
 		}
 
+		// draw slider
+		ofRect(0, startY, barwidth[i], sliderHeight);
+
+		// draw value string
+		glColor3f(valueStringColor.r, valueStringColor.g, valueStringColor.b);
 		ofDrawBitmapString(ofToString(getValue(i), 4), 3, startY + 12);
 
-		startY += config->colorSliderHeight * 1.6; // was *2
+		startY += config->colorSliderHeight;
 	}
 
 	ofFill();
