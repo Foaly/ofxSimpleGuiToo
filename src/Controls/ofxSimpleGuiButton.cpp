@@ -5,6 +5,7 @@
 ofxSimpleGuiButton::ofxSimpleGuiButton(string name, bool &value) : ofxSimpleGuiValueControl<bool>(name, value) {
 	beToggle	= false;
 	beenPressed = false;
+	isBGColorFixed = false;
 	controlType = "Button";
 	setup();
 }
@@ -57,6 +58,21 @@ void ofxSimpleGuiButton::onRelease(int x, int y, int button) {
 	if(!beToggle) (*value) = false;
 }
 
+void ofxSimpleGuiButton::fixBGColorToActivated(bool isFixed) {
+    isBGColorFixed = isFixed;
+}
+
+void ofxSimpleGuiButton::update()
+{
+    if(isBGColorFixed) {
+        backgroundColor = ofColor::fromHex(config->textBGOverColor);
+    }
+    else {
+        setTextBGColor();
+        backgroundColor = ofGetStyle().color;
+    }
+}
+
 void ofxSimpleGuiButton::draw(float x, float y) {
 	setPosition(x, y);
 
@@ -65,7 +81,7 @@ void ofxSimpleGuiButton::draw(float x, float y) {
 
 	ofEnableAlphaBlending();
 	ofFill();
-	setTextBGColor();
+	ofSetColor(backgroundColor);
 	if(config->rounded)
 	{
         roundedRect(0,0,width,height,config->rectRadius);

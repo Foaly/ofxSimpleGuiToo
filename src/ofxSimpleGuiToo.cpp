@@ -219,9 +219,19 @@ void ofxSimpleGuiToo::nextPageWithBlank() {
 
 
 void ofxSimpleGuiToo::setPage(int i) {
+    // turn the current tab off
+    if(currentPageIndex > 0 && currentPageIndex < 11) {
+        tabButtonPointer[currentPageIndex - 1]->fixBGColorToActivated(false);
+	}
+
 	currentPageIndex = i;
 	if(currentPageIndex >= pages.size()) currentPageIndex = 1;
 	else if(currentPageIndex < 1) currentPageIndex = pages.size()-1;
+
+    // turn the new tab on
+	if(currentPageIndex > 0 && currentPageIndex < 11) {
+        tabButtonPointer[currentPageIndex - 1]->fixBGColorToActivated(true);
+	}
 
 	if(titleButton) titleButton->setName(ofToString(currentPageIndex) + ": " + pages[currentPageIndex]->name);
 }
@@ -275,6 +285,7 @@ ofxSimpleGuiPage &ofxSimpleGuiToo::addPage(string name) {
             button->setWidth(config->headerTabWidth);
             button->setHeight(config->headerTabHeight);
             headerPage->addControl(*button);
+            tabButtonPointer[lastPageIndex] = button;
         }
         else {
             std::cout << "Warning: A Tab in the header bar will only be created for the first 10 GUI pages. You currently have " << pages.size() - 1 << " pages." << std::endl;

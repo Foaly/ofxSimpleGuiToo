@@ -125,6 +125,8 @@ protected:
 
 	// this array contains bool flags, to detect clicks from the buttons in the headerPage for changing the page
 	std::array<bool, 10>                activePageFlags;
+	// this array contains pointer to the tab buttons in the header, for setting the active tabs background color
+	std::array<ofxSimpleGuiButton*, 10>     tabButtonPointer;
 
 	void addListeners();
 	void removeListeners();
