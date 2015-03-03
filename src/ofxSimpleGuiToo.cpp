@@ -49,13 +49,9 @@ void ofxSimpleGuiToo::setup() {
 
 	doSave			= false;
 	changePage		= false;
-	titleButton		= NULL;
 
 	headerPage		= &addPage("Header");
 	headerPage->height = config->buttonHeight + config->offset.y;
-	titleButton = &headerPage->addButton("title", changePage);
-    titleButton->setWidth(config->headerTabWidth);
-    titleButton->setHeight(config->headerTabHeight);
 
 	addPage();
 	setAutoSave(true);
@@ -188,9 +184,9 @@ void ofxSimpleGuiToo::draw() {
 	ofSetHexColor(config->borderColor);
 	ofSetLineWidth(3);
 	if(alignRight)
-        ofLine(ofGetWidth() - headerPage->width, headerPage->height, ofGetWidth(), headerPage->height);
+        ofLine(ofGetWidth() - headerPage->width - config->padding.x, headerPage->height, ofGetWidth(), headerPage->height);
 	else
-        ofLine(0, headerPage->height, headerPage->width, headerPage->height);
+        ofLine(0, headerPage->height, headerPage->width + config->padding.x, headerPage->height);
 
     // draw the current page
 	pages[currentPageIndex]->draw(0.0f, headerPage->height, alignRight);
@@ -232,8 +228,6 @@ void ofxSimpleGuiToo::setPage(int i) {
 	if(currentPageIndex > 0 && currentPageIndex < 11) {
         tabButtonPointer[currentPageIndex - 1]->fixBGColorToActivated(true);
 	}
-
-	if(titleButton) titleButton->setName(ofToString(currentPageIndex) + ": " + pages[currentPageIndex]->name);
 }
 
 

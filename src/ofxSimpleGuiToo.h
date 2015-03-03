@@ -120,7 +120,6 @@ protected:
 	float							border;
 
 	ofxSimpleGuiPage				*headerPage;
-	ofxSimpleGuiButton				*titleButton;
 	vector <ofxSimpleGuiPage*>		pages;				// 0 is for headerPage
 
 	// this array contains bool flags, to detect clicks from the buttons in the headerPage for changing the page
