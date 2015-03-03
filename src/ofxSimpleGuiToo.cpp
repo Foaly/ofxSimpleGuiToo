@@ -55,6 +55,7 @@ void ofxSimpleGuiToo::setup() {
 	headerPage->height = config->buttonHeight + config->offset.y;
 	titleButton = &headerPage->addButton("title", changePage);
     titleButton->setWidth(config->headerTabWidth);
+    titleButton->setHeight(config->headerTabHeight);
 
 	addPage();
 	setAutoSave(true);
@@ -272,6 +273,7 @@ ofxSimpleGuiPage &ofxSimpleGuiToo::addPage(string name) {
             activePageFlags[lastPageIndex] = false;
             ofxSimpleGuiButton* button = new ofxSimpleGuiButton(newPage->name, activePageFlags[lastPageIndex]);
             button->setWidth(config->headerTabWidth);
+            button->setHeight(config->headerTabHeight);
             headerPage->addControl(*button);
         }
         else {

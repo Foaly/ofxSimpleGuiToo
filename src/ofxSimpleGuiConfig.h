@@ -53,6 +53,7 @@ public:
 	float	comboBoxHeight;
 	float	comboBoxTextHeight;
 	float   headerTabWidth;
+	float   headerTabHeight;
 
 	ofPoint padding;
 	ofPoint offset;
