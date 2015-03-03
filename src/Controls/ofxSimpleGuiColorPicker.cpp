@@ -140,6 +140,12 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
             // change the color and height of the slider the mouse is over
 			valueStringColor = ofFloatColor(1, 1, 1);
 			sliderHeight = config->colorSliderHeight - 2; // 2 pixel margin
+
+			if(i == 3) {
+			    // make the alpha sliders text color the inverse of its value for a better visual feedback
+                const float inverseValue = 1.f - getValue(i);
+                valueStringColor = ofFloatColor(inverseValue, inverseValue, inverseValue);
+			}
 		}
 
 		// draw slider
