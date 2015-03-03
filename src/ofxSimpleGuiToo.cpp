@@ -52,13 +52,9 @@ void ofxSimpleGuiToo::setup() {
 	titleButton		= NULL;
 
 	headerPage		= &addPage("Header");
-	//headerPage->height = config->buttonHeight * 2;
-	headerPage->height = 0;
-	headerPage->width = 0;
+	headerPage->height = config->buttonHeight + config->offset.y;
 	titleButton = &headerPage->addButton("title", changePage);
-	headerPage->addToggle("Auto Save", doAutoSave);
-	headerPage->addButton("Save Settings", doSave);
-	headerPage->addFPSCounter();
+    titleButton->setWidth(config->headerTabWidth);
 
 	addPage();
 	setAutoSave(true);
@@ -185,10 +181,17 @@ void ofxSimpleGuiToo::draw() {
 
 	glDisableClientState(GL_COLOR_ARRAY);
 
-	//headerPage->draw(0, 0, alignRight);		// this is the header
+	// draw the header
+	headerPage->draw(0, 0, alignRight);
+	// draw the line underneath it
 	ofSetHexColor(config->borderColor);
-	if(alignRight) ofLine(ofGetWidth() - headerPage->width, headerPage->height, headerPage->width, headerPage->height);
-	else ofLine(0, headerPage->height, headerPage->width, headerPage->height);
+	ofSetLineWidth(3);
+	if(alignRight)
+        ofLine(ofGetWidth() - headerPage->width, headerPage->height, ofGetWidth(), headerPage->height);
+	else
+        ofLine(0, headerPage->height, headerPage->width, headerPage->height);
+
+    // draw the current page
 	pages[currentPageIndex]->draw(0.0f, headerPage->height, alignRight);
 
 	ofPopStyle();
@@ -260,9 +263,21 @@ ofxSimpleGuiPage &ofxSimpleGuiToo::addPage(string name) {
 	ofxSimpleGuiPage *newPage = new ofxSimpleGuiPage(name);//ofToString(pages.size(), 0) + ": " + name);
 	pages.push_back(newPage);
 	if(name == "") newPage->setName("SETTINGS");
-	static bool b;
-//	if(pages.size() > 1) headerPage->addTitle(newPage->name);		// if this isn't the first page, add to header
-//	if(pages.size() > 1) newPage->addTitle(newPage->name);		// if this isn't the first page, add to header
+
+	if(pages.size() > 1) {
+        const int lastPageIndex = pages.size() - 2; // - 2 because the array indices are 0 based and we don't count the header page
+
+        // for the first 10 pages create a tab button in the header
+        if(lastPageIndex < 10) {
+            activePageFlags[lastPageIndex] = false;
+            ofxSimpleGuiButton* button = new ofxSimpleGuiButton(newPage->name, activePageFlags[lastPageIndex]);
+            button->setWidth(config->headerTabWidth);
+            headerPage->addControl(*button);
+        }
+        else {
+            std::cout << "Warning: A Tab in the header bar will only be created for the first 10 GUI pages. You currently have " << pages.size() - 1 << " pages." << std::endl;
+        }
+	}
 	setPage(pages.size() - 1);
 	return *newPage;
 }
@@ -350,6 +365,14 @@ void ofxSimpleGuiToo::update(ofEventArgs &e) {
 	if(changePage) {
 		nextPage();
 		changePage = false;
+	}
+
+    // if one of the tab buttons in the header bar was clicked, change to the corresponding page
+	for(size_t i = 0; i < activePageFlags.size(); i++) {
+        if(activePageFlags[i] == true) {
+            setPage(i + 1); // + 1 because the first page is the header page
+            activePageFlags[i] = false;
+        }
 	}
 
 	headerPage->update(e);

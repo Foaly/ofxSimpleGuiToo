@@ -93,32 +93,30 @@ void ofxSimpleGuiPage::saveToXML() {
 }
 
 
-float ofxSimpleGuiPage::getNextY(float y) {
-	return y;
-	int iy = (int)ceil(y/config->gridSize.y);
-	return (iy) * config->gridSize.y;
-}
-
-
 void ofxSimpleGuiPage::draw(float x, float y, bool alignRight) {
 	setPosition(x += config->offset.x, y += config->offset.y);
-	if(alignRight) x = ofGetWidth() - x -  config->gridSize.x;
+	if(alignRight && controls.size() > 0)
+        x = ofGetWidth() - x - controls[0]->getWidth();
 
 	float posX		= 0;
 	float posY		= 0;
 	float stealingX = 0;
 	float stealingY = 0;
+	bool isNewColumn = false;
 
 	ofSetRectMode(OF_RECTMODE_CORNER);
 
 	for(int i=0; i<controls.size(); i++) {
 		ofxSimpleGuiControl &control = *controls[i];
+		const float elementWidthWithPadding = control.getWidth() + config->padding.x;
 
-		if(control.newColumn) {
-			if(alignRight) posX -= config->gridSize.x;
-			else posX += config->gridSize.x;
+		if(control.newColumn && !isNewColumn) {
+			if(alignRight) posX -= elementWidthWithPadding;
+			else posX += elementWidthWithPadding;
 			posY = 0;
 		}
+
+		isNewColumn = false;
 
 		float controlX = posX + x;
 		float controlY = posY + y;
@@ -138,12 +136,14 @@ void ofxSimpleGuiPage::draw(float x, float y, bool alignRight) {
 			glLineWidth(0.5f);
 			ofRect(controlX, controlY, control.width, control.height);
 		}
-		posY = getNextY(posY + control.height + config->padding.y);
+		posY += control.height + config->padding.y;
 
-		if(posY + y >= height - control.height - config->padding.y) {
-			if(alignRight) posX -= config->gridSize.x;
-			else posX += config->gridSize.x;
+        // if the absolute current y position plus the elements height is greater than the height of the page break into a new column
+		if(y + posY + control.height + config->padding.y >= height) {
+			if(alignRight) posX -= elementWidthWithPadding;
+			else posX += elementWidthWithPadding;
 			posY = 0;
+			isNewColumn = true;
 		}
 
 		//		if(guiFocus == controls[i]->guiID) controls[i]->focused = true;		// MEMO

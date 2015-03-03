@@ -40,6 +40,8 @@
 
 #include "ofxSimpleGuiIncludes.h"
 
+#include <array>
+
 class ofxSimpleGuiToo {
 
 public:
@@ -120,6 +122,9 @@ protected:
 	ofxSimpleGuiPage				*headerPage;
 	ofxSimpleGuiButton				*titleButton;
 	vector <ofxSimpleGuiPage*>		pages;				// 0 is for headerPage
+
+	// this array contains bool flags, to detect clicks from the buttons in the headerPage for changing the page
+	std::array<bool, 10>                activePageFlags;
 
 	void addListeners();
 	void removeListeners();

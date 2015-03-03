@@ -50,6 +50,7 @@ ofxSimpleGuiConfig::ofxSimpleGuiConfig() {
 	slider2DTextHeight	= titleHeight * 1.5;
 	comboBoxHeight		= titleHeight;	//15
 	comboBoxTextHeight	= 15;
+	headerTabWidth      = 120;
 
 
 	padding.set			(titleHeight/2, 3); // was titleHeight/2 , 10
