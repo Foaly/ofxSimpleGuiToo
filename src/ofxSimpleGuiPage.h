@@ -64,6 +64,8 @@ public:
 	ofxSimpleGuiColorPicker		&addColorPicker(string name, float *values);
 	ofxSimpleGuiComboBox		&addComboBox(string name, int &choice_out, int numChoices, string* choiceTitles=NULL);
 
+	ofxSimpleGuiControl*        findControlByName(std::string name);
+
 	void SetEventStealingControl(ofxSimpleGuiControl &control);
 	void ReleaseEventStealingControl();
 

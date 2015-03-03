@@ -219,6 +219,16 @@ ofxSimpleGuiComboBox &ofxSimpleGuiPage::addComboBox(string name, int &choice_out
 }
 
 
+// If the given name is found the method returns the found control parameter.
+// If the given name is not found NULL is returned.
+ofxSimpleGuiControl* ofxSimpleGuiPage::findControlByName(std::string name) {
+    for(size_t i = 0; i < controls.size(); i++) {
+        if(controls[i]->name == name) {
+            return controls[i];
+        }
+    }
+    return NULL;
+}
 
 
 void ofxSimpleGuiPage::update(ofEventArgs &e) {
