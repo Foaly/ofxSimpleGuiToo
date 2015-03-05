@@ -69,13 +69,14 @@ public:
 
 	virtual bool hitTest(int tx, int ty);
 
+	int            *m_selectedChoice;
+
 protected:
 	void setCBTextColor();
 	void setCBTextBGColor();
 	void releaseEventStealingFocus();
 
 	int            m_mouseChoice;
-	int            &m_selectedChoice;
 	bool           m_hasFocus;
 	bool           m_mouseMovedSinceClick;
 	string          m_title;

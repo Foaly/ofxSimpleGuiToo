@@ -15,10 +15,10 @@
 
 ofxSimpleGuiComboBox::ofxSimpleGuiComboBox(string name, int &choice_out, int numChoices, ofxSimpleGuiPage *owner, string* choiceTitles ) :
 ofxSimpleGuiControl(name),
-m_selectedChoice(choice_out),
+m_selectedChoice(&choice_out),
 m_page(owner)
 {
-	m_selectedChoice = m_mouseChoice = 0;
+	*m_selectedChoice = m_mouseChoice = 0;
 	if(numChoices <=1)
 		numChoices = 1;
 	m_hasFocus=false;
@@ -42,7 +42,7 @@ void ofxSimpleGuiComboBox::setTitleForIndex(int index, string title) {
 }
 
 string ofxSimpleGuiComboBox::getTitleForIndex(int index) {
-	if(index < 0 || index >= m_choices.size())return m_choices.size() ? m_choices[m_selectedChoice] : "No Choices Available";
+	if(index < 0 || index >= m_choices.size())return m_choices.size() ? m_choices[*m_selectedChoice] : "No Choices Available";
 	return m_choices[index];
 }
 
@@ -75,8 +75,8 @@ void ofxSimpleGuiComboBox::removeChoice(int index) {
 
 	m_choices.erase(m_choices.begin() + removeIndex);
 	//also update the selected indexes.
-	if(m_selectedChoice >= removeIndex)
-		m_selectedChoice--;
+	if(*m_selectedChoice >= removeIndex)
+		*m_selectedChoice--;
 	if(m_mouseChoice >= removeIndex)
 		m_mouseChoice--;
 }
@@ -101,11 +101,11 @@ void ofxSimpleGuiComboBox::keyPressed( int key ) {
 }
 
 int ofxSimpleGuiComboBox::getValue() {
-	return m_selectedChoice;
+	return *m_selectedChoice;
 }
 
 void ofxSimpleGuiComboBox::setValue(int index) {
-	m_selectedChoice = ofClamp(index, 0, m_choices.size());
+	*m_selectedChoice = ofClamp(index, 0, m_choices.size());
 }
 
 void ofxSimpleGuiComboBox::setValue(string title) {
@@ -181,7 +181,7 @@ void ofxSimpleGuiComboBox::onRelease(int x, int y, int button) {
 
 void ofxSimpleGuiComboBox::releaseEventStealingFocus(){
 	//see which index was selected, but only if the user actually moved around.
-	m_selectedChoice = m_mouseChoice >= 0? m_mouseChoice : m_selectedChoice;
+	*m_selectedChoice = m_mouseChoice >= 0? m_mouseChoice : *m_selectedChoice;
 
 	//a release toggles focus state if we are on - TODO: unless x and y don't change
 	m_hasFocus = false;
@@ -220,7 +220,7 @@ void ofxSimpleGuiComboBox::draw(float x, float y) {
 	setTextColor();
 
 	ofDrawBitmapString(m_title, kSGCBTextPaddingX, kSGCBTextPaddingY);
-	ofDrawBitmapString(m_choices.size() ? m_choices[m_selectedChoice] : "N/A", kSGCBTextPaddingX, kSGCBTextPaddingY * 2 + 3); // 3 pixel margin between texts
+	ofDrawBitmapString(m_choices.size() ? m_choices[*m_selectedChoice] : "N/A", kSGCBTextPaddingX, kSGCBTextPaddingY * 2 + 3); // 3 pixel margin between texts
 	//draw a combobox down triangle icon so the users know to click
 	ofTriangle(width - (kSGCBTriangleWidth + KSGCBTrianglePadding), kSGCBTextPaddingY/2,
 			   width - (KSGCBTrianglePadding), kSGCBTextPaddingY/2,
