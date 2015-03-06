@@ -136,15 +136,26 @@ void ofxSimpleGuiColorPicker::draw(float x, float y) {
 		ofFloatColor valueStringColor(0.5, 0.5, 0.5);
 		float sliderHeight = 2.0;
 
+        // change the color and height of the slider if the mouse is over
 		if(overBar == i && withinElement) {
-            // change the color and height of the slider the mouse is over
-			valueStringColor = ofFloatColor(1, 1, 1);
 			sliderHeight = config->colorSliderHeight - 2; // 2 pixel margin
 
-			if(i == 3) {
-			    // make the alpha sliders text color the inverse of its value for a better visual feedback
-                const float inverseValue = 1.f - getValue(i);
-                valueStringColor = ofFloatColor(inverseValue, inverseValue, inverseValue);
+			switch(i) {
+                case 1:
+                    // make the green slider text color black for better readability
+                    valueStringColor = ofFloatColor(0.f, 0.f, 0.f);
+                    break;
+                case 3:
+                    {
+                        // make the alpha sliders text color the inverse of its value for a better readability
+                        const float inverseValue = 1.f - getValue(i);
+                        valueStringColor = ofFloatColor(inverseValue, inverseValue, inverseValue);
+                        break;
+                    }
+                default:
+                    // red and blue slider text becomes white on mouse over
+                    valueStringColor = ofFloatColor(1.f, 1.f, 1.f);
+                    break;
 			}
 		}
 
