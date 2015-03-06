@@ -164,9 +164,19 @@ void ofxSimpleGuiComboBox::mouseMoved(int x, int y) {
 	if(m_hasFocus) {
 		//see which index was selected.
 		float fChoice = (y - (height - config->comboBoxTextHeight) - (this->y + config->comboBoxTextHeight))/config->comboBoxTextHeight;
-		//TODO:replace with OF constrain macro.
-		m_mouseChoice = fChoice < 0?-1:(fChoice>= m_choices.size()? -1:fChoice);
-	}
+
+        // see if the mouse is within the element
+        if(getMouseX() >= this->x && getMouseX() <= this->x + width) {
+            // clamp index to choices size
+            if(fChoice < 0 || fChoice >= m_choices.size()) {
+                fChoice = -1;
+            }
+            m_mouseChoice = fChoice;
+        }
+        else {
+            m_mouseChoice = *m_selectedChoice;
+        }
+    }
 }
 
 void ofxSimpleGuiComboBox::onReleaseOutside(int x, int y, int button) {
