@@ -50,7 +50,7 @@ ofxSimpleGuiConfig::ofxSimpleGuiConfig() {
 	slider2DTextHeight	= titleHeight * 1.5;
 	comboBoxHeight		= titleHeight;	//15
 	comboBoxTextHeight	= 15;
-	headerTabWidth      = 130;
+	headerTabWidth      = 135;
 	headerTabHeight     = titleHeight;
 
 

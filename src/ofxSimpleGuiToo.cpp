@@ -53,11 +53,13 @@ void ofxSimpleGuiToo::setup() {
 	headerPage		= &addPage("Header");
 	headerPage->height = config->buttonHeight + config->offset.y;
 
+	// add default page ("General Settings")
 	addPage();
+    setPage(1);
+
 	setAutoSave(true);
 	setAlignRight(false);
 	setDraw(false);
-	setPage(1);
 
 	ofAddListener(ofEvents().keyPressed, this, &ofxSimpleGuiToo::keyPressed);
 }
@@ -267,7 +269,7 @@ ofxSimpleGuiPage &ofxSimpleGuiToo::addPage(string name) {
 
 	ofxSimpleGuiPage *newPage = new ofxSimpleGuiPage(name);//ofToString(pages.size(), 0) + ": " + name);
 	pages.push_back(newPage);
-	if(name == "") newPage->setName("SETTINGS");
+	if(name == "") newPage->setName("General Settings");
 
 	if(pages.size() > 1) {
         const int lastPageIndex = pages.size() - 2; // - 2 because the array indices are 0 based and we don't count the header page
