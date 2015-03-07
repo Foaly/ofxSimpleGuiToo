@@ -24,8 +24,8 @@ int		myInt7;
 int		myInt8;
 int		myInt9;
 
-int      box1;
-int      box2;
+int     box1;
+int     box2;
 
 float	myFloat1;
 float	myFloat2;
@@ -36,8 +36,9 @@ float	myFloat6;
 float	myFloat7;
 float	myFloat8;
 float	myFloat9;
+float	newFloat;
 
-ofColor	aColor;
+ofFloatColor	aColor;
 
 
 // for demonstrating adding any drawable object (that extends ofBaseDraw);
@@ -51,47 +52,49 @@ ofPoint *points;
 ofPoint	v[300];
 
 //--------------------------------------------------------------
-void testApp::setup(){	 
+void testApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(true);
-	
+
 	// for demonstrating adding any drawable object (that extends ofBaseDraw);
-	vidGrabber.initGrabber(320, 240);	
+	vidGrabber.initGrabber(320, 240);
 	videoInverted 	= new unsigned char[int(vidGrabber.getWidth() * vidGrabber.getHeight() * 3)];
 	videoTexture.allocate(vidGrabber.getWidth(), vidGrabber.getHeight(), GL_RGB);
-	
-	
+
+
 	// 'gui' is a global variable declared in ofxSimpleGuiToo.h
+	// a default page is automatically added, so you can start adding elements right away
+	// One more note: The header bar with a tab for each page is automagically created for the first ten pages!
 	gui.addTitle("A group");
 	gui.addToggle("myBool1 Animate", myBool1Animate);
-	gui.addSlider("myFloat1: noise", myFloat1, 0.0, 1); 
-	gui.addSlider("myInt1", myInt1, 100, 200); 
+	gui.addSlider("myFloat1: noise", myFloat1, 0.0, 1);
+	gui.addSlider("myInt1", myInt1, 100, 200);
 	gui.addComboBox("box1", box1, 12, NULL);
 	gui.addButton("Randomize Background", randomizeButton);
 	gui.addColorPicker("BG Color", &aColor.r);
-	
-	
+
+
 	// start a new group
 	gui.addTitle("Another group");
 	gui.addSlider("myFloat2", myFloat2, 0.0, 1).setSmoothing(0.5);
 	gui.addSlider("myInt2", myInt2, 3, 8);
-	gui.addToggle("myBool2", myBool2);	
-	string titleArray[] = {"Lame", "Alright", "Better", "Best"};
+	gui.addToggle("myBool2", myBool2);
+	std::string titleArray[] = {"Lame", "Alright", "Better", "Best"};
 	gui.addComboBox("box2", box2, 4,  titleArray);
 	gui.addFPSCounter();
-	
+
 	// new group, this time separate into it's own column
 	gui.addTitle("Yes one more group").setNewColumn(true);
-	gui.addToggle("myBool4", myBool4);	
-	gui.addToggle("myBool3", myBool3);	
+	gui.addToggle("myBool4", myBool4);
+	gui.addToggle("myBool3", myBool3);
 	gui.addSlider("myFloat3", myFloat3, 0.0, 1).setSmoothing(0.8);
 	gui.addSlider("myFloat4", myFloat4, 0.0, 20).setSmoothing(1);
 	gui.addSlider("myInt6", myInt6, 0, 10);
 	gui.addSlider("myInt4", myInt4, 320, 1280);
 	gui.addContent("Camera feed", vidGrabber);
 	gui.addContent("Inverted", videoTexture);
-	
-	
+
+
 	gui.addPage("A new page");		// use '[' ']' to cycle through pages, or keys 1-9
 	gui.addSlider("myInt5", myInt5, 2, 5);
 	gui.addSlider("myInt7", myInt7, 0, 100);
@@ -99,45 +102,45 @@ void testApp::setup(){
 	gui.addSlider("myInt3", myInt3, 0, 100);
 	gui.addSlider("myFloat7", myFloat7, 0.0, 1).setSmoothing(0.0);		// default
 	gui.addSlider("myFloat8", myFloat8, 0.0, 0.1).setSmoothing(0.5);
-	gui.addSlider("myInt9", myInt9, 0, 10).setSmoothing(0.9); 
-	
+	gui.addSlider("myInt9", myInt9, 0, 10).setSmoothing(0.9);
+
 	gui.addTitle("Final group?");
-	gui.addToggle("myBool5", myBool5);	
-	gui.addToggle("myBool6", myBool6);	
-	gui.addToggle("myBool7", myBool7);	
-	gui.addToggle("myBool8", myBool8);	
-	
-	
+	gui.addToggle("myBool5", myBool5);
+	gui.addToggle("myBool6", myBool6);
+	gui.addToggle("myBool7", myBool7);
+	gui.addToggle("myBool8", myBool8);
+
+
 	// by default each page is saved in an xml with the same name as display name
 	// you can override this with ofxSimpleGuiPage::setXMLName(string s);
 	// ofxSimpleGuiToo::addPage() returns reference to the page, so you can do it directly on one line
 	// of save it in a variable for use later
-	gui.addPage("My 3rd page").setXMLName("foo.xml");	
+	gui.addPage("My 3rd page").setXMLName("foo.xml");
 	gui.addSlider("myFloat5", myFloat5, 0.0, 5);
 	gui.addSlider("myFloat6", myFloat6, 0.0, 1);
-	gui.addSlider("myFloat9", myFloat9, 0.0, 0.01 ); 
-	gui.addToggle("myBool9", myBool9);	
-	
-	
+	gui.addSlider("myFloat9", myFloat9, 0.0, 0.01 );
+	gui.addToggle("myBool9", myBool9);
+
+
 	gui.loadFromXML();
-	
+
 	printf("myint : %i\n", myInt1);
-	
+
+    //gui.setAlignRight(true);
 	gui.show();
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 	if(myBool1Animate) myFloat1 = ofNoise(ofGetElapsedTimef());
-	
+
 	if(randomizeButton) {
 		randomizeButton = false;
 		aColor.r = ofRandomuf();
 		aColor.g = ofRandomuf();
 		aColor.b = ofRandomuf();
 	}
-	
-	
+
 	// from ofVideoGrabber example (
 	vidGrabber.update();
 	if(vidGrabber.isFrameNew()){
@@ -151,12 +154,12 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofBackground(aColor.r * 255, aColor.g * 255.0f, aColor.b * 255.0);
-	
+
 	gui.draw();
 }
 
 //--------------------------------------------------------------
-void testApp::keyPressed (int key){ 
+void testApp::keyPressed (int key){
 	if(key>='0' && key<='9') {
 		gui.setPage(key - '0');
 		gui.show();
@@ -166,13 +169,29 @@ void testApp::keyPressed (int key){
 			case '[': gui.prevPage(); break;
 			case ']': gui.nextPage(); break;
 			case 'p': gui.nextPageWithBlank(); break;
+			case 's': gui.show(); break;
+			case 'h': gui.hide(); break;
+			case 'f': ofToggleFullscreen(); break;
+			case 'x':
+			    {
+			        std::cout << "newFloat should be empty: " << newFloat << std::endl;
+                    // dynamically change the variable that a gui element controls
+                    ofxSimpleGuiControl* control = gui.page("A new page").findControlByName("myFloat7");
+                    if(control) {
+                        // cast to correct base class
+                        newFloat = *(dynamic_cast<ofxSimpleGuiSliderFloat*>(control))->value;
+                        dynamic_cast<ofxSimpleGuiSliderFloat*>(control)->value = &newFloat;
+                    }
+                    std::cout << "newFloat is now updated with the value of the \"myFloat7\" slider: " << newFloat << std::endl;
+			    }
+                break;
 		}
 	}
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased  (int key){ 
-	
+void testApp::keyReleased  (int key){
+
 }
 
 //--------------------------------------------------------------
@@ -189,5 +208,5 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(){
-	
+
 }
