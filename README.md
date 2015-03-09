@@ -15,6 +15,7 @@ Highlight of this fork
  * A useful header bar with a tab for each of the first 10 pages
  * The tab of the currently selected page is highlighted
  * Compiles with most recent version of openFrameworks (0.8.4)
+ * Added the `clone_dependencies.sh` script
  * Lots of bugfixes:
    * ComboBox works again
    * Improved selection of ComboBox
@@ -26,6 +27,9 @@ Highlight of this fork
 
 Dependencies
 ------------
+
+To install all dependencies simply run the `clone_dependencies.sh` script. 
+It will download all the nessessary addons, but it won't overwrite any changes, if you already have some of the addons installed.
 
 This repo depends on:
  * ofxTextInputField (https://github.com/Flightphase/ofxTextInputField) - adds well editable-text labels in sliders, for a precise value changing

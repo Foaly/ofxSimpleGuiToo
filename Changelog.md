@@ -1,4 +1,20 @@
 ofxSimpleGuiToo changelog
+=========================
+
+v1.4      (9.3.2015)
+--------------------
+- Modified the header bar, so it displays a tab for each of the first 10 pages
+- The tab of the currently selected page is highlighted
+- Compiles with most recent version of openFrameworks (0.8.4)
+- Added the `clone_dependencies.sh` script
+- Lots of bugfixes:
+    - ComboBox works again
+    - Improved selection of ComboBox
+    - Improved selection of ColorPicker
+    - Changes slider text color for better readability
+    - ColorPickers slider change height when selected for a better visual feedback
+    - for more details check the commit history
+
 
 v1.3
 --------------------
@@ -7,15 +23,14 @@ v1.3
   Wasn't consistent so now all controls can assume that we are already inside the <controls> tag.
 - fixed keyboard support (any control which the mouse is hovering over, now receives the events:
      keyPressed(int key), keyReleased(int key), onKeyUp(), onKeyDown(), onKeyLeft(), onKeyRight(), onKeyEnter()
-  
-  
+
 
 v1.2
 --------------------
 - lots of thing, can't remember. whoops.
 
 
-v1.1	07/04/2009
+v1.1	(07/04/2009)
 --------------------
 - changed license to revised BSD (a lot more more permissive than GPL)
 
